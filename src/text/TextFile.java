@@ -101,6 +101,23 @@ public abstract class TextFile {
 	        }
 	    }
 	}
+
+	/**
+	 * GET RIGHT FILENAME
+	 * @param angle
+	 * @return
+	 */
+	public static String getFileName(int angle){
+		
+		String angleString = "";
+		
+		if (angle < 100) {
+	    	angleString = "" + 0 + angle;
+	    }else {
+			angleString = "" + angle;
+		}
+        return "fega_30nm_" + angleString +".dat";
+	}
 }
 
 	
