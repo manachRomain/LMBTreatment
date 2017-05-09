@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -35,10 +36,12 @@ public abstract class XYView {
 	    
 	    Collection<Path> all = new ArrayList<Path>();
 		TextFile.addTree(path, all);
+		
+		String sampleName = JOptionPane.showInputDialog(frame, "Précisez le suffixe du ficher à rechercher (ex : fega_30nm)");
 
 	    while (anglePassed || countAngleError == 4) {
 			
-		    String name = JOptionPane.showInputDialog(frame, "Quel angle voulez-vous afficher ?");
+	    	String name = JOptionPane.showInputDialog(frame, "Quel angle voulez-vous afficher ?");
 		    
 		    try {
 		    	angle = Integer.parseInt(name);
@@ -58,12 +61,12 @@ public abstract class XYView {
     
         Collection<?> files = FileUtils.listFiles(root, null, true);
 
-	    if (SelectFolder.checkFileExists(files, angle, frame).getCheck()) {
+		if (SelectFolder.checkFileExists(files, angle, frame, sampleName).getCheck()) {
 			       
 			try {
-				ArrayList<Double> magneticField = TextFile.physicsContents(TextFile.readFile(Convert.convertCollectionToArrayList(all).get(SelectFolder.checkFileExists(files, angle, frame).getCount()).toString()), 0);
-				ArrayList<Double> saturationMagnetization = TextFile.physicsContents(TextFile.readFile(Convert.convertCollectionToArrayList(all).get(SelectFolder.checkFileExists(files, angle, frame).getCount()).toString()), 2);
-				ArrayList<Double> transverseMagnetization = TextFile.physicsContents(TextFile.readFile(Convert.convertCollectionToArrayList(all).get(SelectFolder.checkFileExists(files, angle, frame).getCount()).toString()), 1);
+				ArrayList<Double> magneticField = TextFile.physicsContents(TextFile.readFile(Convert.convertCollectionToArrayList(all).get(SelectFolder.checkFileExists(files, angle, frame,sampleName).getCount()).toString()), 0);
+				ArrayList<Double> saturationMagnetization = TextFile.physicsContents(TextFile.readFile(Convert.convertCollectionToArrayList(all).get(SelectFolder.checkFileExists(files, angle, frame,sampleName).getCount()).toString()), 2);
+				ArrayList<Double> transverseMagnetization = TextFile.physicsContents(TextFile.readFile(Convert.convertCollectionToArrayList(all).get(SelectFolder.checkFileExists(files, angle, frame,sampleName).getCount()).toString()), 1);
 				
 				JOptionPane.showMessageDialog(frame,"Chargement réussi");
 				

@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.image.SampleModel;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -44,7 +45,7 @@ public abstract class SelectFolder {
 	 * @param files
 	 * @return
 	 */
-	public static ObjectParameters checkFileExists(Collection<?> files, int angle,JFrame frame ){
+	public static ObjectParameters checkFileExists(Collection<?> files, int angle,JFrame frame, String sampleName ){
 		
 		int countIterator = 0;
 		boolean recursive = true;
@@ -53,7 +54,7 @@ public abstract class SelectFolder {
 			 for (Iterator<?> iterator = files.iterator(); iterator.hasNext();) { 
 	            	
 		         File file = (File) iterator.next();
-		         if (file.getName().equals(TextFile.getFileName(angle))){
+		         if (file.getName().equals(TextFile.getFileName(angle, sampleName))){
 		         System.out.println(file.getAbsolutePath());
 		         break;
 	         }

@@ -107,7 +107,7 @@ public abstract class TextFile {
 	 * @param angle
 	 * @return
 	 */
-	public static String getFileName(int angle){
+	public static String getFileName(int angle, String sampleName){
 		
 		String angleString = "";
 		
@@ -116,7 +116,7 @@ public abstract class TextFile {
 	    }else {
 			angleString = "" + angle;
 		}
-        return "fega_30nm_" + angleString +".dat";
+        return sampleName +"_" + angleString +".dat";
 	}
 }
 
