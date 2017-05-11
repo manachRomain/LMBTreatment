@@ -28,6 +28,10 @@ public abstract class XYView {
 		int angle = 0; 
 		
 		boolean anglePassed = true;
+		
+		ArrayList<Double> magneticField = new ArrayList<Double>();
+		ArrayList<Double> saturationMagnetization = new ArrayList<Double>();
+		ArrayList<Double> transverseMagnetization = new ArrayList<Double>();
 
 		JFrame frame = new JFrame("LMB TREATMENT");
 
@@ -64,9 +68,9 @@ public abstract class XYView {
 		if (SelectFolder.checkFileExists(files, angle, frame, sampleName).getCheck()) {
 			       
 			try {
-				ArrayList<Double> magneticField = TextFile.physicsContents(TextFile.readFile(Convert.convertCollectionToArrayList(all).get(SelectFolder.checkFileExists(files, angle, frame,sampleName).getCount()).toString()), 0);
-				ArrayList<Double> saturationMagnetization = TextFile.physicsContents(TextFile.readFile(Convert.convertCollectionToArrayList(all).get(SelectFolder.checkFileExists(files, angle, frame,sampleName).getCount()).toString()), 2);
-				ArrayList<Double> transverseMagnetization = TextFile.physicsContents(TextFile.readFile(Convert.convertCollectionToArrayList(all).get(SelectFolder.checkFileExists(files, angle, frame,sampleName).getCount()).toString()), 1);
+				magneticField = TextFile.physicsContents(TextFile.readFile(Convert.convertCollectionToArrayList(all).get(SelectFolder.checkFileExists(files, angle, frame,sampleName).getCount()).toString()), 0);
+				saturationMagnetization = TextFile.physicsContents(TextFile.readFile(Convert.convertCollectionToArrayList(all).get(SelectFolder.checkFileExists(files, angle, frame,sampleName).getCount()).toString()), 2);
+				transverseMagnetization = TextFile.physicsContents(TextFile.readFile(Convert.convertCollectionToArrayList(all).get(SelectFolder.checkFileExists(files, angle, frame,sampleName).getCount()).toString()), 1);
 				
 				JOptionPane.showMessageDialog(frame,"Chargement réussi");
 				
@@ -86,7 +90,7 @@ public abstract class XYView {
 				
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(frame,"Les fichiers ne sont pas au bon format ou ils ne sont pas présent dans le dossier","Erreur de chargement",JOptionPane.ERROR_MESSAGE );
-			}
+			}	
 			
 	    }
 		

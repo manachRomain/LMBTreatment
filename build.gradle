@@ -31,4 +31,5 @@ dependencies {
     compile group: 'jfree', name: 'jfreechart', version: '1.0.13'
     compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.6'
     compile group: 'commons-io', name: 'commons-io', version: '2.5'
+    compile group: 'gov.nist.math', name: 'jama', version: '1.0.3'
 }

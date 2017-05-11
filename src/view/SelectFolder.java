@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.image.SampleModel;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;

@@ -1,5 +1,7 @@
 package utils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -59,5 +61,35 @@ public abstract class Convert {
 		 }
 		 return target;
 	}
+	
+	/**
+	 * CONVERT TAB OF DOUBLE TO ARRAYLIST OF DOUBLE
+	 * @param ds
+	 * @return
+	 */
+	public static ArrayList<Double> convertTabDoubleToListDouble(double[] ds){
+		
+		ArrayList<Double> doubleList = new ArrayList<Double>();
+		
+		for (double d : ds) {
+			doubleList.add(d);
+		}
+		
+		return doubleList;
+		
+	}
+	
+	/**
+	 * FUNCTION TO ROUND RESULT
+	 * @param result
+	 * @return
+	 */
+	public static double roundResult(Double result, int round){
+		BigDecimal bd = new BigDecimal(result).setScale(round, RoundingMode.HALF_EVEN);
+		result = bd.doubleValue();
+		return result;
+	}
+	
+
 
 }

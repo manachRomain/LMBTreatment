@@ -16,7 +16,8 @@ import javax.swing.JPanel;
 public class MainView extends JFrame implements ActionListener{
 		
 	  private JButton xyPlot = new JButton("XY Plot");
-	  private JButton azimutalPlot = new JButton("Azimutal Plot");
+	  //private JButton azimutalPlot = new JButton("Azimutal Plot");
+	  private JButton fileTreatment = new JButton("Files Treatment");
 	  private JPanel container = new JPanel();
 	  private JLabel label = new JLabel("Application de traitement du VSM");
 	  
@@ -31,10 +32,11 @@ public class MainView extends JFrame implements ActionListener{
 	    container.setLayout(new BorderLayout());
 
 	    xyPlot.addActionListener(this);
+	    fileTreatment.addActionListener(this);
 	        
 	    JPanel south = new JPanel();
 	    south.add(xyPlot);
-	    south.add(azimutalPlot);
+	    south.add(fileTreatment);
 	    container.add(south, BorderLayout.SOUTH);
 	          
 	    Font police = new Font("Tahoma", Font.PLAIN, 14);  
@@ -54,15 +56,19 @@ public class MainView extends JFrame implements ActionListener{
 	   * GET SOME FUNCTION CLICKING ON BUTTON
 	   */
 	  public void actionPerformed(ActionEvent arg0) {	
-		  if (arg0.getSource() == xyPlot ) {
+		if (arg0.getSource() == xyPlot ) {
 			try {
 				XYView.viewXYGraph();
 			} catch (IOException e) {
 				
 			}
 		}
+		
+		else if (arg0.getSource() == fileTreatment ) {
+			VSMTreatmentView.msTreatment();
+		}
 	  }
-
+		
 }      
 	
 
