@@ -16,7 +16,6 @@ import javax.swing.JPanel;
 public class MainView extends JFrame implements ActionListener{
 		
 	  private JButton xyPlot = new JButton("XY Plot");
-	  //private JButton azimutalPlot = new JButton("Azimutal Plot");
 	  private JButton fileTreatment = new JButton("Files Treatment");
 	  private JPanel container = new JPanel();
 	  private JLabel label = new JLabel("Application de traitement du VSM");

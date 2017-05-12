@@ -2,6 +2,7 @@ package utils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -14,10 +15,16 @@ public abstract class Convert {
 	 */
 	public static ArrayList<Double> convertStringToDouble(ArrayList<String> columns){
 		
+		Double doubleString;
 		ArrayList<Double> doubleList = new ArrayList<Double>();
 		
 		for (int i = 0; i < columns.size(); i++) {
-			doubleList.add(Double.parseDouble((columns.get(i))));
+			try {
+				doubleString = Double.parseDouble((columns.get(i)));
+				doubleList.add(doubleString);	
+			} catch (Exception e) {
+				doubleList = null;
+			}		
 		}
 		
 		return doubleList;
@@ -84,12 +91,17 @@ public abstract class Convert {
 	 * @param result
 	 * @return
 	 */
-	public static double roundResult(Double result, int round){
+	public static Double roundResult(Double result, int round){
 		BigDecimal bd = new BigDecimal(result).setScale(round, RoundingMode.HALF_EVEN);
-		result = bd.doubleValue();
+		result = bd.doubleValue();       
 		return result;
 	}
 	
-
+	
+	public static Integer roundResultBis(int result, int round){
+		BigDecimal bd = new BigDecimal(result).setScale(round, RoundingMode.HALF_EVEN);
+		result = bd.intValue();       
+		return result;
+	}
 
 }

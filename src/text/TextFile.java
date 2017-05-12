@@ -41,11 +41,15 @@ public abstract class TextFile {
 			}
 			sc2.close();
 			
-			allContentsClean = TextFile.cleanContents(allContents);
-			
+			try {
+				allContentsClean = TextFile.cleanContents(allContents);
+			} catch (Exception e) {
+				
+			}
+					
 			return Convert.convertStringToDouble((Convert.dotTreatment(allContentsClean)));
 		}
-	
+		
 	/**
 	 * FUNCTION SELECTING A COLUMN A FILE AND TREATED FILE
 	 * @param path
@@ -107,13 +111,17 @@ public abstract class TextFile {
 		
 		ArrayList<Double> physicsContents = new ArrayList<Double>();
 		
-		for (int i = 0; i < arrayList.size(); i++) {
-			try {
-				physicsContents.add(arrayList.get(index + 4*i));
-			} catch (Exception e) {
-				//System.err.println("Warning : Out of Bound, List not recorded");
+		if (arrayList != null) {
+			for (int i = 0; i < arrayList.size(); i++) {
+				try {
+					physicsContents.add(arrayList.get(index + 4*i));
+				} catch (Exception e) {
+				}
 			}
+		}else {
+			physicsContents = null;
 		}
+				
 		return physicsContents;
 	}
 
@@ -132,7 +140,9 @@ public abstract class TextFile {
 	                addTree(child, all);
 	            }
 	        }
-	    }
+	    }catch (Exception e) {
+			
+		}
 	}
 
 	/**
@@ -186,8 +196,6 @@ public abstract class TextFile {
 	 */
 	public static FeGa userPreciseParameters(File file){
 		
-		// TODO : CREATE A FUNCTION THAT TAKE THE GOOD FILE IN FUNCTION OF THE ANGLE
-		
 		ArrayList<Double> magneticField = new ArrayList<Double>();
 		ArrayList<Double> saturationMagnetization = new ArrayList<Double>();
 		ArrayList<Double> transverseMagnetization = new ArrayList<Double>();
@@ -217,7 +225,7 @@ public abstract class TextFile {
 	}
 	
 	/**
-	 * 
+	 * GET THE RIGHT ANGLE FROM THE FILENAME
 	 * @param file
 	 * @return
 	 */
@@ -235,5 +243,6 @@ public abstract class TextFile {
 		return angleList.get(1);
 	
 	}
+
 
 }

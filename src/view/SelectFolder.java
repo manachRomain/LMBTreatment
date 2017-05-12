@@ -9,6 +9,7 @@ import java.util.Iterator;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
 
 import text.TextFile;
 import utils.ObjectParameters;
@@ -22,7 +23,7 @@ public abstract class SelectFolder {
 	public static Path getFolder(){
 		
 		JFileChooser chooser = new JFileChooser();
-	
+			
 	    chooser.setCurrentDirectory(new java.io.File("."));
 	    chooser.setDialogTitle("Choisissez un répertoire");
 	    chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -31,12 +32,13 @@ public abstract class SelectFolder {
 	    if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 	      System.out.println("getCurrentDirectory(): " + chooser.getCurrentDirectory());
 	      System.out.println("getSelectedFile() : " + chooser.getSelectedFile());
-	    } else {
-	      System.out.println("No Selection ");
-	      System.exit(0);   
+	      return Paths.get(chooser.getSelectedFile().toString());
+	    }else {
+	      System.out.println("No Selection "); 
+	      return null;
 	    }
 	    
-	    return Paths.get(chooser.getSelectedFile().toString());
+	    //return Paths.get(chooser.getSelectedFile().toString());
 	}
 
 	/**

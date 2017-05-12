@@ -1,7 +1,6 @@
 package utils;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,31 +19,24 @@ public abstract class VSMTreatment {
 		
 		DataTreated dataTreated = new DataTreated();		
 		
-		// Division des listes en deux (aller)
 		List<Double> xDataCome = xData.subList(0, xData.size()/2);
 		List<Double> yDataCome = yData.subList(0, yData.size()/2);
 		
-		// Division des listes en deux (retour)
 		List<Double> xDataReturn = xData.subList(xData.size()/2, xData.size());
 		List<Double> yDataReturn = yData.subList(yData.size()/2, yData.size());
 	
-		// Ms aller (positive value coercitive field)
 		List<Double> xDataComePlus =  xDataCome.subList(0, dataToFit);
 		List<Double> yDataComePlus =  yDataCome.subList(0, dataToFit);
 			
-		// Ms retour (positive value coercitive field)
 		List<Double> xDataReturnPlus =  xDataReturn.subList(xDataReturn.size()-dataToFit, xDataReturn.size());
 		List<Double> yDataReturnPlus =  yDataReturn.subList(yDataReturn.size()-dataToFit, yDataReturn.size());
 		
-		// Ms aller (negative value coercitive field)
 		List<Double> xDataComeMinus =  xDataCome.subList(Integer.valueOf(xDataCome.size()-dataToFit), Integer.valueOf(xDataCome.size()));
 		List<Double> yDataComeMinus =  yDataCome.subList(Integer.valueOf(yDataCome.size()-dataToFit), Integer.valueOf(yDataCome.size()));
-	
-		// Ms retour (negative value coercitive field)
+
 		List<Double> xDataReturnMinus =  xDataReturn.subList(0, dataToFit);
 		List<Double> yDataReturnMinus =  yDataReturn.subList(0, dataToFit);
 		
-		// Ajout des listes du champ magnétique à l'objet
 		dataTreated.setMagneticFieldCome(xDataCome);
 		dataTreated.setMagneticFieldReturn(xDataReturn);
 		
@@ -56,7 +48,6 @@ public abstract class VSMTreatment {
 		dataTreated.setMagneticFieldReturnMinus(xDataReturnMinus);
 		dataTreated.setMagneticFieldReturnPlus(xDataReturnPlus);
 		
-		// Ajout des listes de l'aimantation magnétiques
 		dataTreated.setMagnetizationComeMinus(yDataComeMinus);
 		dataTreated.setMagnetizationComePlus(yDataComePlus);
 		dataTreated.setMagnetizationReturnMinus(yDataReturnMinus);
@@ -166,29 +157,35 @@ public abstract class VSMTreatment {
 		
 		List<Double> mtCome = VSMTreatment.translateMtValues(dataTreated.getMagnetizationCome(), 1000);
 		List<Double> mtReturn = VSMTreatment.translateMtValues(dataTreated.getMagnetizationReturn(), 1000);
-//		List<Double> Hcome = dataTreated.getMagnetizationCome();
-//		List<Double> Hreturn = dataTreated.getMagnetizationCome();
+
 		
-		Collections.max(mtCome);
-		Collections.min(mtCome);
+		double maxMtCome = Collections.max(mtCome);
+		double minMtCome = Collections.min(mtCome);
 		
-		Collections.max(mtReturn);
-		Collections.min(mtReturn);
+		double maxMtReturn = Collections.max(mtReturn);
+		double minMtReturn = Collections.min(mtReturn);
 		
-		// TODO : GET MT COME & GET MT RETURN
+		double mtSatCome =  mtSaturationValues.get(0)+1000;
+		double mtSatReturn =  mtSaturationValues.get(1)+1000;
+		
+		///////////////// WORKING ////////////////////
+		
+		// TODO : GET MT COME & GET MT RETURN (TO CHECK)
 		// MT COME
-		if (Collections.max(mtCome) > mtSaturationValues.get(0)) {
-			mtAbsoluteValues.add(Collections.max(mtCome) - mtSaturationValues.get(0)-1000);
-		}else if (mtSaturationValues.get(0) > Collections.min(mtCome) ) {
-			mtAbsoluteValues.add(mtSaturationValues.get(0) -1000 - Collections.min(mtCome));
+		if (maxMtCome > mtSatCome) {
+			mtAbsoluteValues.add(maxMtCome -mtSatCome);
+		}else if (mtSatCome > minMtCome ) {
+			mtAbsoluteValues.add(mtSatCome - minMtCome);
 		} 
 			
 		// MT RETURN
-		if (Collections.max(mtReturn) > mtSaturationValues.get(1)) {
-			mtAbsoluteValues.add(Collections.max(mtReturn) - mtSaturationValues.get(1) -1000 );
-		}else if (mtSaturationValues.get(1) > Collections.min(mtReturn) ) {
-			mtAbsoluteValues.add(mtSaturationValues.get(1) -1000 - Collections.min(mtReturn));
+		if (mtSatReturn > maxMtReturn) {
+			mtAbsoluteValues.add(maxMtReturn - mtSatReturn);
+		}else if (mtSatReturn > minMtReturn ) {
+			mtAbsoluteValues.add(mtSatReturn - minMtReturn);
 		} 
+		
+		////////////////////////////////////////////
 		
 		return mtAbsoluteValues;
 		
