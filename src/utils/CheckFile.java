@@ -1,6 +1,6 @@
 package utils;
 
-public class ObjectParameters {
+public class CheckFile {
 	
 	private Boolean check;
 	private Integer count;
@@ -18,11 +18,11 @@ public class ObjectParameters {
 		this.count = count;
 	}
 	
-	public ObjectParameters() {
+	public CheckFile() {
 		super();
 	}
 	
-	public ObjectParameters(Boolean check, Integer count) {
+	public CheckFile(Boolean check, Integer count) {
 		super();
 		this.check = check;
 		this.count = count;

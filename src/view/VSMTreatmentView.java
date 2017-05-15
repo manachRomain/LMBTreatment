@@ -6,33 +6,43 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
 import org.apache.commons.io.FileUtils;
+
+import constant.Constants;
 import text.TextFile;
 import utils.Convert;
 import utils.VSMTreatment;
 
-public abstract class VSMTreatmentView {
+public abstract class VSMTreatmentView implements Constants {
+	
 	
 	public static void msTreatment(){
+		
+		File root;		
+		Boolean error = false;	
+		Path path = MainView.folderName;
+		
+		Double msSaturation = null;
+		Double mtValueCome = null;
+		Double mtValueReturn = null;
+		
+		Integer angle = null;
 		
 		ArrayList<String> resultList = new ArrayList<String>();
 	    ArrayList<Double> doubleList = new ArrayList<Double>();
 	    ArrayList<Double> magneticField = new ArrayList<Double>();
 	    ArrayList<Double> transverseMagnetization =  new ArrayList<Double>();
 	    ArrayList<Double> saturationMagnetization = new ArrayList<Double>();
-		
-		JFrame frame = new JFrame("LMB TREATMENT");
-		File root;
-		
-		Boolean error = false;
-	
-		Path path = SelectFolder.getFolder();
-		
+					
 		if (path == null) {
-		}else {
+			JOptionPane.showMessageDialog(frame,FOLDER_ERROR,FOLDER_TITLE_ERROR,JOptionPane.ERROR_MESSAGE );
+		}
+			
+		else if (MainView.FIT_VALUE == null || MainView.ROUND_VALUE == null) {
+			JOptionPane.showMessageDialog(frame,"La valeur du fit/arrondi ne peut pas être nulle ",FILE_TITLE_ERROR,JOptionPane.ERROR_MESSAGE );
+	
+		} else {
 			
 			root = new File(path.toString());
 			 
@@ -44,8 +54,8 @@ public abstract class VSMTreatmentView {
 				e1.printStackTrace();
 			}
 		    
-		    Collection<?> files = FileUtils.listFiles(root, null, true);	   
-		    
+		    Collection<?> files = FileUtils.listFiles(root, null, true);
+		   
 		    for (Object file : files) {
 		    	
 		    	try {
@@ -56,34 +66,43 @@ public abstract class VSMTreatmentView {
 		    		saturationMagnetization = TextFile.physicsContents(doubleList, 2);
 		    		
 		    		if (doubleList == null || magneticField == null || transverseMagnetization == null || saturationMagnetization == null) {
-						
-					}else {
+		    			
+		    			break;
+					} else {
 						
 						try {
-							double msSaturation = Convert.roundResult(VSMTreatment.getMsSaturationFit(magneticField, saturationMagnetization, 20), 5);
-				    		double mtValueCome = Convert.roundResult(VSMTreatment.getAbsoluteMtValue(magneticField, transverseMagnetization, 20).get(0), 5);
-				    		double mtValueReturn = Convert.roundResult(VSMTreatment.getAbsoluteMtValue(magneticField, transverseMagnetization, 20).get(1), 5);
-				    		int angle = TextFile.userPreciseParameters((File)file).getAngle();
-				    		resultList.add(msSaturation + "	" + mtValueCome + "	" + mtValueReturn  + "	"  + Convert.roundResult(mtValueCome/msSaturation, 5)  + "	" + Convert.roundResult(mtValueReturn/msSaturation, 5) + "	" + angle);
+							
+							msSaturation = Convert.roundResult(VSMTreatment.getMsSaturationFit(magneticField, saturationMagnetization, MainView.FIT_VALUE), MainView.ROUND_VALUE);
+				    		mtValueCome = Convert.roundResult(VSMTreatment.getAbsoluteMtValue(magneticField, transverseMagnetization, MainView.FIT_VALUE).get(0), MainView.ROUND_VALUE);
+				    		mtValueReturn = Convert.roundResult(VSMTreatment.getAbsoluteMtValue(magneticField, transverseMagnetization, MainView.FIT_VALUE).get(1), MainView.ROUND_VALUE);
+				    		angle = TextFile.getAngleFromFile((File)file);
+				    		
+				    		resultList.add(msSaturation + "	" + mtValueCome + "	" + mtValueReturn  + "	"  + Convert.roundResult(mtValueCome/msSaturation, MainView.ROUND_VALUE)  + "	" 
+				    				+ Convert.roundResult(mtValueReturn/msSaturation, MainView.ROUND_VALUE) + "	" + angle);
+				    		
 						} catch (Exception e) {
-							JOptionPane.showMessageDialog(frame,"Erreur de données sur le fichier :" + file.toString(),"Erreur de fichier",JOptionPane.ERROR_MESSAGE );
+							JOptionPane.showMessageDialog(frame,"Paramètres d'entrée incorrects !",FILE_TITLE_ERROR,JOptionPane.ERROR_MESSAGE );
 							error = true;
 							break;
-						}
-						
+						}						
 					} 
+		    		
 		    	}catch (IOException e) {
-					JOptionPane.showMessageDialog(frame,"le fichier : " + file.toString() + "n'est pas au bon format ou ne contient pas les bonnes données","Erreur de fichier",JOptionPane.ERROR_MESSAGE );
+					JOptionPane.showMessageDialog(frame,FILE_ERROR,FILE_TITLE_ERROR,JOptionPane.ERROR_MESSAGE );
 					}
 		    	}
 		    
 		    	if (error == false) {
-		    		JOptionPane.showMessageDialog(frame,"Les fichiers ont été traité avec succès");
+		    		JOptionPane.showMessageDialog(frame,SUCCESS_TREATMENT);
 				      
-				    String fileName = JOptionPane.showInputDialog(frame, "Donner un nom à votre fichier (ex : test)");
-				    TextFile.saveResult(fileName, resultList);
-				    JOptionPane.showMessageDialog(frame,"Sauvegarde réussie");
-				}else {
+				    String fileName = JOptionPane.showInputDialog(frame,ENTER_FILENAME);
+				    if (fileName != null) {
+				    	TextFile.saveResult(fileName, resultList);
+					    JOptionPane.showMessageDialog(frame,SUCCESS_SAVE);
+					} else {
+						
+					}				    
+				} else {
 					
 				}
     

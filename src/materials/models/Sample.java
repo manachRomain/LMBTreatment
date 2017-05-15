@@ -2,7 +2,7 @@ package materials.models;
 
 import materials.base.Base;
 
-public class FeGa extends Base {
+public class Sample extends Base {
 	
 	private float magnetization;
 	private float thickness;
@@ -20,11 +20,11 @@ public class FeGa extends Base {
 		this.thickness = thickness;
 	}
 	
-	public FeGa() {
+	public Sample() {
 		super();
 	}
 	
-	public FeGa(float magnetization, float thickness) {
+	public Sample(float magnetization, float thickness) {
 		super();
 		this.magnetization = magnetization;
 		this.thickness = thickness;

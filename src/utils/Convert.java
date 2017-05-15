@@ -2,7 +2,6 @@ package utils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -87,7 +86,7 @@ public abstract class Convert {
 	}
 	
 	/**
-	 * FUNCTION TO ROUND RESULT
+	 * FUNCTION TO ROUND RESULT (WITH DOUBLE PARAMETER)
 	 * @param result
 	 * @return
 	 */
@@ -98,6 +97,12 @@ public abstract class Convert {
 	}
 	
 	
+	/**
+	 * FUNCTION TO ROUND RESULT (WITH INT RESULT)
+	 * @param result
+	 * @param round
+	 * @return
+	 */
 	public static Integer roundResultBis(int result, int round){
 		BigDecimal bd = new BigDecimal(result).setScale(round, RoundingMode.HALF_EVEN);
 		result = bd.intValue();       

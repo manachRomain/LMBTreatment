@@ -10,50 +10,58 @@ import java.util.Collection;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.WindowConstants;
-
 import org.apache.commons.io.FileUtils;
 
+import constant.Constants;
 import text.TextFile;
+import utils.CheckFile;
 import utils.Convert;
 
-public abstract class XYView {
+public abstract class XYView implements Constants {
+	
+	static JFrame frame = new JFrame();
 	
 	/**
 	 * SHOW XYGRAPH FOR A PRECISE ANGLE GIVEN BY USER
+	 * @param mainView 
 	 * @throws IOException
 	 */
 	public static void viewXYGraph() throws IOException{
 		
-		Integer angle = 0; 
-		Collection<?> files;
+		Integer angle = null; 
+		Integer response = null;
+		String sampleName = "";
+		String name = "";
 		
+		Collection<?> files;	
 		File root = null;
-
+		
+		ArrayList<Double> contentList = new ArrayList<Double>();
 		ArrayList<Double> magneticField = new ArrayList<Double>();
 		ArrayList<Double> saturationMagnetization = new ArrayList<Double>();
 		ArrayList<Double> transverseMagnetization = new ArrayList<Double>();
+		
+		CheckFile checkFile = new CheckFile();
 
-		JFrame frame = new JFrame("LMB TREATMENT");
-		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		//frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
-	    Path path = SelectFolder.getFolder();
+	    Path path = MainView.folderName;
 	    
 	    if (path == null) {
-	    	
+	    	JOptionPane.showMessageDialog(frame,FOLDER_ERROR,FOLDER_TITLE_ERROR,JOptionPane.ERROR_MESSAGE );
 		} else {		
 		
 		    Collection<Path> all = new ArrayList<Path>();
 			TextFile.addTree(path, all);
 			
-			String sampleName = JOptionPane.showInputDialog(frame, "Précisez le suffixe du fichier à rechercher (ex : fega_30nm)");
+			sampleName = JOptionPane.showInputDialog(frame,ENTER_FILE_SUFFIX);
 	 		
-		    String name = JOptionPane.showInputDialog(frame, "Quel angle voulez-vous afficher ?");
+		    name = JOptionPane.showInputDialog(frame,ENTER_ANGLE);
 			    
 			try {
 				angle = Integer.parseInt(name);
 			} catch (Exception e) {				
-				JOptionPane.showMessageDialog(frame,"Le chiffre rentré n'est pas valide","Erreur de saisie",JOptionPane.ERROR_MESSAGE );
+				JOptionPane.showMessageDialog(frame,ANGLE_ERROR,ENTER_TITLE_ERROR,JOptionPane.ERROR_MESSAGE );
 			}	  
 			    
 		    try {
@@ -62,35 +70,45 @@ public abstract class XYView {
 			} catch (Exception e) {
 				files = null;
 			}
+		    
+		    try {
+		    	checkFile = SelectFolder.checkFileExists(files, angle, frame, sampleName);
+			} catch (Exception e) {
+				checkFile.setCheck(false);
+			}
+		    
 	       
-			if (SelectFolder.checkFileExists(files, angle, frame, sampleName).getCheck()) {
+			if (checkFile.getCheck()) {
 				       
 				try {
-					magneticField = TextFile.physicsContents(TextFile.readFile(Convert.convertCollectionToArrayList(all).get(SelectFolder.checkFileExists(files, angle, frame,sampleName).getCount()).toString()), 0);
-					saturationMagnetization = TextFile.physicsContents(TextFile.readFile(Convert.convertCollectionToArrayList(all).get(SelectFolder.checkFileExists(files, angle, frame,sampleName).getCount()).toString()), 2);
-					transverseMagnetization = TextFile.physicsContents(TextFile.readFile(Convert.convertCollectionToArrayList(all).get(SelectFolder.checkFileExists(files, angle, frame,sampleName).getCount()).toString()), 1);
 					
-					JOptionPane.showMessageDialog(frame,"Chargement réussi");
+					contentList = TextFile.readFile(Convert.convertCollectionToArrayList(all).get(checkFile.getCount()).toString());
+					
+					magneticField = TextFile.physicsContents(contentList, 0);
+					saturationMagnetization = TextFile.physicsContents(contentList, 2);
+					transverseMagnetization = TextFile.physicsContents(contentList, 1);
+					
+					JOptionPane.showMessageDialog(frame,LOAD_SUCCESSFUL);
 					
 					String[] options = new String[] {"Longitudinal", "Transverse", "Les deux"};
-				    int response = JOptionPane.showOptionDialog(null, "Quel(s) graphe(s) voulez-vous afficher ?", "Sélection des graphes",
+				    response = JOptionPane.showOptionDialog(null, SELECT_GRAPH, SELECT_GRAPH_TITLE,
 				        JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
 				        null, options, options[0]);
 					
 					if (response == 0) {				
-						XYgraph.showXYGraph(magneticField, saturationMagnetization, "Longitudinale magnetization" + " - " + "field direction : " + angle + "°","Magnetic Field (Oe)","Magnetization (EMU)","data");
+						XYgraph.showXYGraph(magneticField, saturationMagnetization, ML_GRAPH_TITLE + angle + "°",X_TITLE,Y_TITLE,"data");
 					} else if(response == 1){				
-						XYgraph.showXYGraph(magneticField, transverseMagnetization, "Transverse magnetization" + " - " + "field direction : " + angle + "°","Magnetic Field (Oe)","Magnetization (EMU)","data");
+						XYgraph.showXYGraph(magneticField, transverseMagnetization, MT_GRAPH_TITLE + angle + "°",X_TITLE,Y_TITLE,"data");
 					} else {								
-						XYgraph.showXYGraph(magneticField, saturationMagnetization, "Longitudinale magnetization" + " - " + "field direction : " + angle + "°","Magnetic Field (Oe)","Magnetization (EMU)","data");
-						XYgraph.showXYGraph(magneticField, transverseMagnetization, "Transverse magnetization" + " - " + "field direction : " + angle + "°","Magnetic Field (Oe)","Magnetization (EMU)","data");
+						XYgraph.showXYGraph(magneticField, saturationMagnetization,ML_GRAPH_TITLE + angle + "°",X_TITLE,Constants.Y_TITLE,"data");
+						XYgraph.showXYGraph(magneticField, transverseMagnetization, MT_GRAPH_TITLE + angle + "°",X_TITLE,Y_TITLE,"data");
 					}
 					
 				} catch (Exception e) {
-					JOptionPane.showMessageDialog(frame,"Les fichiers ne sont pas au bon format ou ils ne sont pas présent dans le dossier","Erreur de chargement",JOptionPane.ERROR_MESSAGE );
+					JOptionPane.showMessageDialog(frame,FILE_ERROR,LOAD_TITLE_ERROR,JOptionPane.ERROR_MESSAGE );
 				}					
 		    } else {
-		    	//JOptionPane.showMessageDialog(frame,"Le fichier n'a pas été trouvé","Erreur de chargement",JOptionPane.ERROR_MESSAGE );
+		    	
 			}		
 		}
 	}		

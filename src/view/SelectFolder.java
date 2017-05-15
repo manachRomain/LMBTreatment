@@ -9,12 +9,12 @@ import java.util.Iterator;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.WindowConstants;
 
+import constant.Constants;
 import text.TextFile;
-import utils.ObjectParameters;
+import utils.CheckFile;
 
-public abstract class SelectFolder {
+public abstract class SelectFolder implements Constants {
 	
 	/**
 	 * GET RIGHT FOLDER
@@ -30,15 +30,13 @@ public abstract class SelectFolder {
 	    chooser.setAcceptAllFileFilterUsed(false);
 
 	    if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-	      System.out.println("getCurrentDirectory(): " + chooser.getCurrentDirectory());
-	      System.out.println("getSelectedFile() : " + chooser.getSelectedFile());
+	      chooser.getCurrentDirectory();
+	      chooser.getSelectedFile();
 	      return Paths.get(chooser.getSelectedFile().toString());
 	    }else {
-	      System.out.println("No Selection "); 
+	      System.out.println("No folder selected"); 
 	      return null;
 	    }
-	    
-	    //return Paths.get(chooser.getSelectedFile().toString());
 	}
 
 	/**
@@ -46,7 +44,7 @@ public abstract class SelectFolder {
 	 * @param files
 	 * @return
 	 */
-	public static ObjectParameters checkFileExists(Collection<?> files, int angle,JFrame frame, String sampleName ){
+	public static CheckFile checkFileExists(Collection<?> files, int angle,JFrame frame, String sampleName ){
 		
 		int countIterator = 0;
 		boolean recursive = true;
@@ -61,7 +59,7 @@ public abstract class SelectFolder {
 	         }
 	                
 	         else if (countIterator == files.size()-1) {
-		         JOptionPane.showMessageDialog(frame,"Le fichier n'a pas été trouvé ou l'angle saisit n'existe pas","Erreur de chargement",JOptionPane.ERROR_MESSAGE );
+		         JOptionPane.showMessageDialog(frame,CHECK_FILE_ERROR,LOAD_ERROR,JOptionPane.ERROR_MESSAGE );
 		         recursive = false;  				
 			}
 	         countIterator = countIterator + 1;
@@ -71,7 +69,7 @@ public abstract class SelectFolder {
 	        	 recursive = false; 
 	        }
 		 
-		 ObjectParameters objectParameters = new ObjectParameters(recursive, countIterator);		 
+		 CheckFile objectParameters = new CheckFile(recursive, countIterator);		 
 		 return objectParameters;
 	}
 }

@@ -15,11 +15,13 @@ import java.util.regex.Pattern;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import materials.models.FeGa;
+import constant.Constants;
+import materials.models.Sample;
 import utils.Convert;
+import view.MainView;
 import view.SelectFolder;
 
-public abstract class TextFile {
+public abstract class TextFile implements Constants {
 	
 	/**
 	 * FUNCTION SELECTING A COLUMN A FILE AND TREATED FILE
@@ -174,19 +176,18 @@ public abstract class TextFile {
 	 */
 	public static void saveResult(String fileName, ArrayList<String> resultList){
 		
-		 Path path = SelectFolder.getFolder();
-		 
-		 try{
-			  PrintWriter writer = new PrintWriter(path.toString()+ "/" + fileName + ".txt", "UTF-8");
-			  
-			  for (int i = 0; i < resultList.size(); i++) {
-				  writer.println(resultList.get(i));					
-			  }
-			  	
-			  writer.close();
-			} catch (IOException e) {
-			  
-			}
+		 if (fileName != null) {
+			 try{
+				  PrintWriter writer = new PrintWriter(MainView.folderName.toString()+ "/" + fileName + ".txt", "UTF-8");		  
+				  for (int i = 0; i < resultList.size(); i++) {
+					  writer.println(resultList.get(i));					
+				  }				  	
+				  writer.close();
+				} catch (IOException e) {					
+				}
+		}else {
+			
+		}	
 	}
 	
 	/**
@@ -194,35 +195,30 @@ public abstract class TextFile {
 	 * @param file
 	 * @return
 	 */
-	public static FeGa userPreciseParameters(File file){
-		
-		ArrayList<Double> magneticField = new ArrayList<Double>();
-		ArrayList<Double> saturationMagnetization = new ArrayList<Double>();
-		ArrayList<Double> transverseMagnetization = new ArrayList<Double>();
-		
-		FeGa fegaSample = new FeGa();
-
-		JFrame frame = new JFrame("LMB TREATMENT");
-
-		if (true) {
-			       
-			try {
-				magneticField = TextFile.physicsContents(TextFile.readFileBIS(file), 2);
-				saturationMagnetization = TextFile.physicsContents(TextFile.readFileBIS(file), 2);
-				transverseMagnetization = TextFile.physicsContents(TextFile.readFileBIS(file), 1);
-				
-				fegaSample.setMagneticField(magneticField);
-				fegaSample.setSaturationMagnetization(saturationMagnetization);
-				fegaSample.setTransverseMagnetization(transverseMagnetization);
-				fegaSample.setAngle(TextFile.getAngleFromFile(file));
-				
-			} catch (Exception e) {
-				JOptionPane.showMessageDialog(frame,"Les fichiers ne sont pas au bon format ou ils ne sont pas présent dans le dossier","Erreur de chargement",JOptionPane.ERROR_MESSAGE );
-			}	
-	    }
-		
-		return fegaSample;	
-	}
+//	public static Sample userPreciseParameters(File file){
+//		
+//		ArrayList<Double> magneticField = new ArrayList<Double>();
+//		ArrayList<Double> saturationMagnetization = new ArrayList<Double>();
+//		ArrayList<Double> transverseMagnetization = new ArrayList<Double>();
+//		
+//		Sample sample = new Sample();
+//       
+//		try {
+//			magneticField = TextFile.physicsContents(TextFile.readFileBIS(file), 2);
+//			saturationMagnetization = TextFile.physicsContents(TextFile.readFileBIS(file), 2);
+//			transverseMagnetization = TextFile.physicsContents(TextFile.readFileBIS(file), 1);
+//				
+//			sample.setMagneticField(magneticField);
+//			sample.setSaturationMagnetization(saturationMagnetization);
+//			sample.setTransverseMagnetization(transverseMagnetization);
+//			sample.setAngle(TextFile.getAngleFromFile(file));
+//				
+//		} catch (Exception e) {
+//			JOptionPane.showMessageDialog(frame,FILE_ERROR,FILE_TITLE_ERROR,JOptionPane.ERROR_MESSAGE );
+//		}	
+//		
+//		return sample;	
+//	}
 	
 	/**
 	 * GET THE RIGHT ANGLE FROM THE FILENAME
@@ -240,7 +236,7 @@ public abstract class TextFile {
 		    angleList.add(Integer.parseInt(m.group()));		   
 		}
 		
-		return angleList.get(1);
+		return angleList.get(angleList.size()-1);
 	
 	}
 

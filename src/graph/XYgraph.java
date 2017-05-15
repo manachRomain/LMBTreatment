@@ -6,8 +6,6 @@ import java.awt.Shape;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -25,7 +23,6 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.util.ShapeUtilities;
 
 import utils.Convert;
-import utils.VSMTreatment;
 
 public abstract class XYgraph {
 	
@@ -50,48 +47,36 @@ public abstract class XYgraph {
 	  * @param yData
 	  */
 	 public static void showXYGraph(ArrayList<Double> xData, ArrayList<Double> yData, String title, String xName,String yName, String sampleName){
-		 SwingUtilities.invokeLater(new Runnable() {
-	            public void run() {
-	                JFrame frame = new JFrame("Plot");
-
-	                frame.setSize(1000, 800);
-	                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	                frame.setVisible(true);
-	                	
-	                XYDataset ds = XYgraph.createDataset(xData,yData,sampleName); 
-	              
-	                JFreeChart chart = ChartFactory.createScatterPlot(title,
-	                        xName, yName, ds, PlotOrientation.VERTICAL, true, true,
-	                        false);
-	                
-	                
-	                XYPlot plot = (XYPlot) chart.getPlot();
-	                XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
-	                
-	                         
-	                Shape cross = ShapeUtilities.createDiagonalCross((float) 1.5, 1);
-	                renderer.setSeriesLinesVisible(0, true);
-	                renderer.setSeriesShape(0, cross);
-	                
-	                renderer.setSeriesPaint(0, new Color(255));
-	                
-	                plot.setRenderer(renderer);
-	                plot.setBackgroundPaint(Color.LIGHT_GRAY);
-	                
-	                // Can be decomment to have smooth plot
-	                //chart.getXYPlot().setRenderer(new XYSplineRenderer());
-	                
-	                ChartPanel cp = new ChartPanel(chart);
-
-	                frame.getContentPane().add(cp);
-	                
-	                //System.out.println(VSMTreatment.fitValue(xData, yData, 20));
-	            }
-	        });
+		 
+		 JFrame frame = new JFrame("Plot");
+	
+		 frame.setSize(1000, 800);
+		 frame.setVisible(true);
+		                	
+		 XYDataset ds = XYgraph.createDataset(xData,yData,sampleName); 
+		              
+		 JFreeChart chart = ChartFactory.createScatterPlot(title,xName, yName, ds, PlotOrientation.VERTICAL, true, true,false);
+		                
+		 XYPlot plot = (XYPlot) chart.getPlot();
+		 XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+		                
+		 Shape cross = ShapeUtilities.createDiagonalCross((float) 1.5, 1);
+		 
+		 renderer.setSeriesLinesVisible(0, true);
+		 renderer.setSeriesShape(0, cross);
+		 renderer.setSeriesPaint(0, new Color(255));
+		                
+		 plot.setRenderer(renderer);
+		 plot.setBackgroundPaint(Color.LIGHT_GRAY);
+		                
+		 ChartPanel cp = new ChartPanel(chart);
+	
+		 frame.getContentPane().add(cp);
+		                
 	 }
 	 
 	 /**
-	  * CREATING A GRPAH WITH SUBPLOT
+	  * CREATING A GRAPH WITH SUBPLOT
 	  * @param xData
 	  * @param yData
 	  * @param xDataFit
@@ -137,5 +122,5 @@ public abstract class XYgraph {
 	        return new JFreeChart("CombinedDomainXYPlot Demo",
 	                              JFreeChart.DEFAULT_TITLE_FONT, plot, true);
 
-	    }
+	 }
 }
