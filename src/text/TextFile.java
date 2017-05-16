@@ -12,14 +12,9 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-
 import constant.Constants;
-import materials.models.Sample;
 import utils.Convert;
 import view.MainView;
-import view.SelectFolder;
 
 public abstract class TextFile implements Constants {
 	
@@ -41,16 +36,16 @@ public abstract class TextFile implements Constants {
 			String word = sc2.next(); 
 			allContents.add(word);
 			}
-			sc2.close();
+		
+		sc2.close();
 			
-			try {
-				allContentsClean = TextFile.cleanContents(allContents);
-			} catch (Exception e) {
-				
-			}
-					
-			return Convert.convertStringToDouble((Convert.dotTreatment(allContentsClean)));
-		}
+		try {
+			allContentsClean = TextFile.cleanContents(allContents);
+		} catch (Exception e) {
+		}					
+		
+		return Convert.convertStringToDouble((Convert.dotTreatment(allContentsClean)));
+	}
 		
 	/**
 	 * FUNCTION SELECTING A COLUMN A FILE AND TREATED FILE
@@ -70,12 +65,13 @@ public abstract class TextFile implements Constants {
 			String word = sc2.next(); 
 			allContents.add(word);
 			}
-			sc2.close();
+		
+		sc2.close();
 			
-			allContentsClean = TextFile.cleanContents(allContents);
+		allContentsClean = TextFile.cleanContents(allContents);
 			
-			return Convert.convertStringToDouble((Convert.dotTreatment(allContentsClean)));
-		}
+		return Convert.convertStringToDouble((Convert.dotTreatment(allContentsClean)));
+	}
 	
 	/**
 	 * CLEAN LIST (DELETE DATE AND OTHER)
@@ -191,36 +187,6 @@ public abstract class TextFile implements Constants {
 	}
 	
 	/**
-	 * SELECT FOLDER, FILENAME AND A PRECISE ANGLE
-	 * @param file
-	 * @return
-	 */
-//	public static Sample userPreciseParameters(File file){
-//		
-//		ArrayList<Double> magneticField = new ArrayList<Double>();
-//		ArrayList<Double> saturationMagnetization = new ArrayList<Double>();
-//		ArrayList<Double> transverseMagnetization = new ArrayList<Double>();
-//		
-//		Sample sample = new Sample();
-//       
-//		try {
-//			magneticField = TextFile.physicsContents(TextFile.readFileBIS(file), 2);
-//			saturationMagnetization = TextFile.physicsContents(TextFile.readFileBIS(file), 2);
-//			transverseMagnetization = TextFile.physicsContents(TextFile.readFileBIS(file), 1);
-//				
-//			sample.setMagneticField(magneticField);
-//			sample.setSaturationMagnetization(saturationMagnetization);
-//			sample.setTransverseMagnetization(transverseMagnetization);
-//			sample.setAngle(TextFile.getAngleFromFile(file));
-//				
-//		} catch (Exception e) {
-//			JOptionPane.showMessageDialog(frame,FILE_ERROR,FILE_TITLE_ERROR,JOptionPane.ERROR_MESSAGE );
-//		}	
-//		
-//		return sample;	
-//	}
-	
-	/**
 	 * GET THE RIGHT ANGLE FROM THE FILENAME
 	 * @param file
 	 * @return
@@ -236,9 +202,6 @@ public abstract class TextFile implements Constants {
 		    angleList.add(Integer.parseInt(m.group()));		   
 		}
 		
-		return angleList.get(angleList.size()-1);
-	
+		return angleList.get(angleList.size()-1);	
 	}
-
-
 }

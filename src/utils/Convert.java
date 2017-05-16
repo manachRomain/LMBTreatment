@@ -85,28 +85,15 @@ public abstract class Convert {
 		
 	}
 	
-	/**
-	 * FUNCTION TO ROUND RESULT (WITH DOUBLE PARAMETER)
-	 * @param result
-	 * @return
-	 */
-	public static Double roundResult(Double result, int round){
-		BigDecimal bd = new BigDecimal(result).setScale(round, RoundingMode.HALF_EVEN);
-		result = bd.doubleValue();       
-		return result;
-	}
-	
 	
 	/**
-	 * FUNCTION TO ROUND RESULT (WITH INT RESULT)
+	 * FUNCTION TO ROUND RESULT
 	 * @param result
 	 * @param round
 	 * @return
 	 */
-	public static Integer roundResultBis(int result, int round){
-		BigDecimal bd = new BigDecimal(result).setScale(round, RoundingMode.HALF_EVEN);
-		result = bd.intValue();       
-		return result;
+	public static Double roundResult(Double result, int round){		
+		return new BigDecimal(result).setScale(round, RoundingMode.HALF_UP).doubleValue(); 		
 	}
 
 }

@@ -107,7 +107,7 @@ public abstract class VSMTreatment {
 			fitValueResult = Math.abs((fitValuePlusCome + fitValuePlusReturn + fitValueMinusCome +fitValueMinusReturn) / 4);
 		}
 				
-		return Convert.roundResult(fitValueResult, 5);
+		return fitValueResult;
 		
 	}
 	
@@ -148,6 +148,13 @@ public abstract class VSMTreatment {
 		return mtResults;	
 	}
 	
+	/**
+	 * GET ABSOLUTE MT VALUE
+	 * @param xData
+	 * @param yData
+	 * @param dataToFit
+	 * @return
+	 */
 	public static ArrayList<Double> getAbsoluteMtValue(ArrayList<Double> xData, ArrayList<Double> yData, int dataToFit){
 		
 		ArrayList<Double> mtAbsoluteValues = new ArrayList<Double>();		
@@ -168,24 +175,18 @@ public abstract class VSMTreatment {
 		double mtSatCome =  mtSaturationValues.get(0)+1000;
 		double mtSatReturn =  mtSaturationValues.get(1)+1000;
 		
-		///////////////// WORKING ////////////////////
-		
-		// TODO : GET MT COME & GET MT RETURN (TO CHECK)
-		// MT COME
-		if (maxMtCome > mtSatCome) {
+		if (maxMtCome-mtSatCome > mtSatCome-minMtCome) {
 			mtAbsoluteValues.add(maxMtCome -mtSatCome);
-		}else if (mtSatCome > minMtCome ) {
+		}else if (maxMtCome-mtSatCome < mtSatCome-minMtCome) {
 			mtAbsoluteValues.add(mtSatCome - minMtCome);
 		} 
 			
 		// MT RETURN
-		if (mtSatReturn > maxMtReturn) {
+		if (maxMtReturn-mtSatReturn > mtSatReturn-minMtReturn) {
 			mtAbsoluteValues.add(maxMtReturn - mtSatReturn);
-		}else if (mtSatReturn > minMtReturn ) {
+		}else if (maxMtReturn-mtSatReturn < mtSatReturn-minMtReturn) {
 			mtAbsoluteValues.add(mtSatReturn - minMtReturn);
 		} 
-		
-		////////////////////////////////////////////
 		
 		return mtAbsoluteValues;
 		

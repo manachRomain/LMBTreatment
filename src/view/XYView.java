@@ -8,7 +8,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import org.apache.commons.io.FileUtils;
 
@@ -18,8 +17,6 @@ import utils.CheckFile;
 import utils.Convert;
 
 public abstract class XYView implements Constants {
-	
-	static JFrame frame = new JFrame();
 	
 	/**
 	 * SHOW XYGRAPH FOR A PRECISE ANGLE GIVEN BY USER
@@ -41,9 +38,9 @@ public abstract class XYView implements Constants {
 		ArrayList<Double> saturationMagnetization = new ArrayList<Double>();
 		ArrayList<Double> transverseMagnetization = new ArrayList<Double>();
 		
+		String[] options;
+		
 		CheckFile checkFile = new CheckFile();
-
-		//frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
 	    Path path = MainView.folderName;
 	    
@@ -80,8 +77,7 @@ public abstract class XYView implements Constants {
 	       
 			if (checkFile.getCheck()) {
 				       
-				try {
-					
+				try {					
 					contentList = TextFile.readFile(Convert.convertCollectionToArrayList(all).get(checkFile.getCount()).toString());
 					
 					magneticField = TextFile.physicsContents(contentList, 0);
@@ -90,9 +86,9 @@ public abstract class XYView implements Constants {
 					
 					JOptionPane.showMessageDialog(frame,LOAD_SUCCESSFUL);
 					
-					String[] options = new String[] {"Longitudinal", "Transverse", "Les deux"};
-				    response = JOptionPane.showOptionDialog(null, SELECT_GRAPH, SELECT_GRAPH_TITLE,
-				        JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+					options = new String[] {"Longitudinal", "Transverse", "Les deux"};
+					
+				    response = JOptionPane.showOptionDialog(null, SELECT_GRAPH, SELECT_GRAPH_TITLE,JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
 				        null, options, options[0]);
 					
 					if (response == 0) {				

@@ -21,9 +21,6 @@ import java.awt.Color;
 
 @SuppressWarnings("serial")
 public class MainView extends JFrame implements Constants, ActionListener {
-
-	
-	private JTextField textField;
 	private JTextField textField_1;
 	
 	private JButton xyPlot;
@@ -31,7 +28,6 @@ public class MainView extends JFrame implements Constants, ActionListener {
 	private JButton selectFolder;
 	
 	public static Path folderName = null;
-	public static Integer ROUND_VALUE = null;
 	public static Integer FIT_VALUE = null;
 
 	public MainView() {
@@ -46,27 +42,25 @@ public class MainView extends JFrame implements Constants, ActionListener {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.getContentPane().setLayout(null);
 		
-		textField = new JTextField();
-		textField.setBounds(149, 221, 54, 20);
-		this.getContentPane().add(textField);
-		textField.setColumns(10);
-		
 		textField_1 = new JTextField();
 		textField_1.setColumns(10);
-		textField_1.setBounds(149, 252, 54, 20);
+		textField_1.setBounds(105, 265, 54, 20);
 		this.getContentPane().add(textField_1);
 		
 		xyPlot = new JButton(XY_PLOT_BTN_NAME);
+		xyPlot.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		xyPlot.setBounds(15, 303, 89, 23);
 		this.getContentPane().add(xyPlot);
 		xyPlot.addActionListener(this);
 		
 		filesTreatment = new JButton(FILE_TREATMENT_BTN_NAME);
+		filesTreatment.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		filesTreatment.setBounds(114, 303, 123, 23);
 		this.getContentPane().add(filesTreatment);
 		filesTreatment.addActionListener(this);
 		
 		selectFolder = new JButton("R\u00E9pertoire...");
+		selectFolder.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		selectFolder.addActionListener(this);
 		selectFolder.setBounds(400, 303, 117, 23);
 		this.getContentPane().add(selectFolder);
@@ -76,27 +70,21 @@ public class MainView extends JFrame implements Constants, ActionListener {
 		lblApplicationDeTraitement.setBounds(166, 11, 219, 21);
 		this.getContentPane().add(lblApplicationDeTraitement);
 		
-		JLabel lblArrondiDesValeurs = new JLabel("Arrondi des valeurs :");
-		lblArrondiDesValeurs.setBounds(10, 221, 129, 20);
-		this.getContentPane().add(lblArrondiDesValeurs);
-		
 		JLabel lblPointsfitter = new JLabel("Points \u00E0 \"fitter\" :");
-		lblPointsfitter.setBounds(32, 255, 108, 14);
+		lblPointsfitter.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		lblPointsfitter.setBounds(15, 268, 89, 14);
 		this.getContentPane().add(lblPointsfitter);
 		
 		TextArea textArea = new TextArea();
 		textArea.setBackground(Color.WHITE);
 		textArea.setText(INFORMATION_TEXT);
 		textArea.setEditable(false);
-		textArea.setBounds(44, 51, 440, 141);
+		textArea.setBounds(44, 51, 440, 186);
 		getContentPane().add(textArea);
 		
 		this.setVisible(true);
 	}
 	
-	 /**
-	   * GET SOME FUNCTION CLICKING ON BUTTON
-	   */
 	  public void actionPerformed(ActionEvent arg0) {	
 		if (arg0.getSource() == xyPlot ) {
 			try {				
@@ -111,11 +99,7 @@ public class MainView extends JFrame implements Constants, ActionListener {
 				}else {
 					FIT_VALUE = Integer.valueOf(textField_1.getText());
 				}				
-				if (textField.getText().equals("")) {
-					ROUND_VALUE = null;
-				}else {
-					ROUND_VALUE = Integer.valueOf(textField.getText());
-				}				
+				
 				VSMTreatmentView.msTreatment();
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(frame,"Les données saisies sont incorrectes",ENTER_TITLE_ERROR,JOptionPane.ERROR_MESSAGE );
