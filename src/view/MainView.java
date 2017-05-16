@@ -24,8 +24,12 @@ public class MainView extends JFrame implements Constants, ActionListener {
 	private JTextField textField_1;
 	
 	private JButton xyPlot;
+	private JButton polarPlot;
 	private JButton filesTreatment;
 	private JButton selectFolder;
+	
+	private String[] options;
+	Integer response = null;
 	
 	public static Path folderName = null;
 	public static Integer FIT_VALUE = null;
@@ -55,7 +59,7 @@ public class MainView extends JFrame implements Constants, ActionListener {
 		
 		filesTreatment = new JButton(FILE_TREATMENT_BTN_NAME);
 		filesTreatment.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		filesTreatment.setBounds(114, 303, 123, 23);
+		filesTreatment.setBounds(214, 303, 123, 23);
 		this.getContentPane().add(filesTreatment);
 		filesTreatment.addActionListener(this);
 		
@@ -82,6 +86,12 @@ public class MainView extends JFrame implements Constants, ActionListener {
 		textArea.setBounds(44, 51, 440, 186);
 		getContentPane().add(textArea);
 		
+		polarPlot = new JButton("Polar Plot");
+		polarPlot.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		polarPlot.setBounds(115, 303, 89, 23);
+		this.getContentPane().add(polarPlot);
+		polarPlot.addActionListener(this);
+		
 		this.setVisible(true);
 	}
 	
@@ -107,6 +117,16 @@ public class MainView extends JFrame implements Constants, ActionListener {
 		}		
 		else if (arg0.getSource() == selectFolder){
 			folderName = SelectFolder.getFolder();
+		}
+		else if (arg0.getSource() == polarPlot ) {
+			if (sample.getMtCome() == null || sample.getMtReturn() == null || sample.getAngles() == null || sample.getMtCome().size() == 0 || sample.getMtReturn().size() == 0 || sample.getAngles().size() == 0) {
+				JOptionPane.showMessageDialog(frame,"Veuillez traiter les données",ENTER_TITLE_ERROR,JOptionPane.ERROR_MESSAGE );
+			}else {
+				options = new String[] {"Mt aller", "Mt Retour", "Les deux"};				
+			    response = JOptionPane.showOptionDialog(null, SELECT_GRAPH, SELECT_GRAPH_TITLE,JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+				PolarChartView.showPolarPlot(response);
+			}
+			
 		}
 	  }
 }

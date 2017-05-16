@@ -2,7 +2,13 @@ package constant;
 
 import javax.swing.JFrame;
 
+import materials.models.Sample;
+
 public interface Constants {
+	
+	// STORE DATA
+	
+	Sample sample = new Sample();
 	
 	// FRAME
 	

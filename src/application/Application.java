@@ -11,6 +11,7 @@ public class Application {
 		MainView mainView = new MainView();
 		mainView.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		
+		
 	}
 
 }

@@ -45,8 +45,16 @@ public abstract class VSMTreatmentView implements Constants {
 	    ArrayList<Double> transverseMagnetization =  new ArrayList<Double>();
 	    ArrayList<Double> saturationMagnetization = new ArrayList<Double>();
 	    
+	    ArrayList<Double> mtComeList = new ArrayList<Double>();
+	    ArrayList<Double> mtReturnList = new ArrayList<Double>();
+	    ArrayList<Double> angles =  new ArrayList<Double>();
+	    
 	    Collection<?> files;
 	    Collection<Path> all;
+	    
+	    sample.setMtCome(mtComeList);
+	    sample.setMtReturn(mtReturnList);
+	    sample.setAngles(angles);
 					
 		if (path == null) {
 			JOptionPane.showMessageDialog(frame,FOLDER_ERROR,FOLDER_TITLE_ERROR,JOptionPane.ERROR_MESSAGE );
@@ -66,7 +74,7 @@ public abstract class VSMTreatmentView implements Constants {
 				e1.printStackTrace();
 			}
 		    
-		    files = FileUtils.listFiles(root, null, true);
+		    files = FileUtils.listFiles(root, null, true);		    
 		   
 		    for (Object file : files) {
 		    	
@@ -79,7 +87,9 @@ public abstract class VSMTreatmentView implements Constants {
 		    		
 		    		if (doubleList == null || magneticField == null || transverseMagnetization == null || saturationMagnetization == null) {
 		    			error = true;
+		    			JOptionPane.showMessageDialog(frame,"Impossible de traiter les données",FILE_TITLE_ERROR,JOptionPane.ERROR_MESSAGE );
 		    			break;
+		
 					} else {
 						
 						try {
@@ -93,8 +103,12 @@ public abstract class VSMTreatmentView implements Constants {
 				    				+ "	" + formatter.format(mtValueReturn)  + "	"  + Convert.roundResult(mtValueCome/msSaturation, 3)  + "	" 
 				    				+ Convert.roundResult(mtValueReturn/msSaturation, 3) + "	" + angle);
 				    		
+				    		sample.getAngles().add(Double.valueOf(angle.toString()));
+				    		sample.getMtCome().add(Convert.roundResult(mtValueCome/msSaturation, 3));
+				    		sample.getMtReturn().add(Convert.roundResult(mtValueReturn/msSaturation, 3));
+				    		
 						} catch (Exception e) {
-							JOptionPane.showMessageDialog(frame,FILE_ERROR,FILE_TITLE_ERROR,JOptionPane.ERROR_MESSAGE );
+							JOptionPane.showMessageDialog(frame,"Le fichier : " + file.toString() + " ne contient pas les bonnes données",FILE_TITLE_ERROR,JOptionPane.ERROR_MESSAGE );
 							error = true;
 							break;
 						}						
