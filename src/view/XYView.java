@@ -1,6 +1,6 @@
 package view;
 
-import graph.XYgraph;
+import graph.java.XYgraph;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.swing.JOptionPane;
+
 import org.apache.commons.io.FileUtils;
 
 import constant.Constants;
